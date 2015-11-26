@@ -1,5 +1,7 @@
+require_relative 'spec_helper.rb'
 require 'docking_station'
 DEFAULT_CAPACITY = DockingStation::DEFAULT_CAPACITY
+
 
 describe DockingStation do
 	it { is_expected.to respond_to :release_bike }
@@ -18,7 +20,7 @@ describe DockingStation do
 
 	describe '#dock' do
 		it 'raises an error when full' do
-			DEFAULT_CAPACITY.times{subject.dock(Bike.new)}
+			subject.capacity.times{subject.dock(Bike.new)}
 			expect {subject.dock Bike.new}.to raise_error 'Docking station full!'
 		end
 	end
@@ -29,9 +31,26 @@ describe DockingStation do
 	end
 
 	it 'docking station full' do
-		DEFAULT_CAPACITY.times{subject.dock Bike.new}
-		expect(subject.count).to eq DEFAULT_CAPACITY
+		subject.capacity.times{subject.dock Bike.new}
+		expect(subject.capacity).to eq DEFAULT_CAPACITY
 	end
+
+	it 'test user set docking capacity' do
+		station = DockingStation.new(10)
+		expect(station.capacity).to eq 10
+	end
+
+
+  #let(:bike) { Bike.new }
+
+  it 'defaults to default_capacity if no capacity is passed' do
+		bike = Bike.new
+    described_class::DEFAULT_CAPACITY.times do
+      subject.dock(bike)
+    end
+    expect{ subject.dock(bike) }.to raise_error 'Docking station full!'
+  end
+
 
 
 end
