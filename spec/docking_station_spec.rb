@@ -4,11 +4,12 @@ DEFAULT_CAPACITY = DockingStation::DEFAULT_CAPACITY
 
 
 describe DockingStation do
-	it { is_expected.to respond_to :release_bike }
+	let(:bike) {double :bike}
 
+	it { is_expected.to respond_to :release_bike }
 	describe '#release_bike' do
 		it 'release bike' do
-			bike = double(:bike)
+			allow(bike).to receive(:working)
 			subject.dock(bike)
 			expect(subject.release_bike).to eq bike
 		end
@@ -52,11 +53,10 @@ describe DockingStation do
   end
 
 	it 'broken bike not released' do
-		bike = double(:bike)
-		bike.report
-		station = DockingStation.new
-		station.dock(bike)
-		expect{station.release_bike}.to raise_error 'Bike is broken'
+
+		allow(bike).to receive(:working).and_return(false)
+		subject.dock(bike)
+		expect{subject.release_bike}.to raise_error 'Bike is broken'
 	end
 
 
