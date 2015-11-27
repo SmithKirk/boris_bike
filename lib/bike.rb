@@ -1,13 +1,16 @@
 class Bike
-	attr_reader :working
-	attr_writer :working
+	attr_accessor :working
 
-	def working
-		@working
-	end
+	# def working
+	# 	@working
+	# end
 
-	def working= (working)
-		@working = working
+	# def working= (working)
+	# 	@working = working
+	# end
+
+	def initialize
+		@working = true
 	end
 
 	def report
